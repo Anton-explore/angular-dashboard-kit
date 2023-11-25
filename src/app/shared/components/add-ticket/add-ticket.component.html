@@ -1,0 +1,85 @@
+<div class="change-contact-wrapper">
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <h2 mat-dialog-title align="center" class="change-ticket-header">
+    {{ addTicketHeading }}
+  </h2>
+  <mat-dialog-content class="change-ticket-content">
+    <form
+      [formGroup]="ticketForm"
+      (ngSubmit)="onSubmit()"
+      class="change-ticket-form">
+      <mat-label for="detail">{{ 'ticket details' | uppercase }}</mat-label>
+      <mat-form-field class="form-field" appearance="outline">
+        <input
+          matInput
+          type="text"
+          id="lastName"
+          formControlName="detail"
+          placeholder="Add description" />
+        <mat-error
+          *ngIf="detail?.invalid && (detail?.dirty || detail?.touched)">
+          {{ getErrorMessage('detail') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-label for="name">{{ 'customer name' | uppercase }}</mat-label>
+      <mat-form-field class="form-field" appearance="outline">
+        <input
+          matInput
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Name" />
+        <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+          {{ getErrorMessage('name') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-label for="date">{{ 'date' | uppercase }}</mat-label>
+      <mat-form-field class="form-field" appearance="outline">
+        <input
+          id="date"
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Choose a date"
+          formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-label for="priority">{{ 'choose priority' | uppercase }}</mat-label>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-select
+          id="priority"
+          formControlName="priority"
+          placeholder="Choose priority">
+          <mat-option value="" disabled>Choose priority</mat-option>
+          <mat-option class="form-option form-option-normal" value="normal">{{
+            'Normal' | uppercase
+          }}</mat-option>
+          <mat-option class="form-option form-option-low" value="low">{{
+            'Low' | uppercase
+          }}</mat-option>
+          <mat-option class="form-option form-option-high" value="high">{{
+            'High' | uppercase
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center" class="change-ticket-footer">
+    <button
+      mat-button
+      class="change-ticket-btn save-btn"
+      (click)="onSubmit()"
+      type="submit"
+      [disabled]="ticketForm.invalid">
+      Save
+    </button>
+    <button mat-button mat-dialog-close class="change-ticket-btn cancel-btn">
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</div>

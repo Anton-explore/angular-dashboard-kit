@@ -1,0 +1,19 @@
+<section class="tickets-wrapper">
+  <button type="button" (click)="addTicket()" class="tickets-add-ticket-button">
+    + Add ticket
+  </button>
+  <div *ngIf="(tickets$ | async)!.length > 0">
+    <app-universal-table
+      [columns]="columns"
+      [dataSource]="(tickets$ | async)!"
+      [errorMessage]="errorMessage"
+      [cellClasses]="{
+        high: 'high-priority',
+        low: 'low-priority',
+        normal: 'normal-priority'
+      }"
+      (elementDeleted)="onTicketDeleted($event)"
+      (elementEdited)="onTicketEdited($event)"></app-universal-table>
+  </div>
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+</section>

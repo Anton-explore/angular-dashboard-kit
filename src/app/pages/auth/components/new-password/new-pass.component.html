@@ -1,0 +1,86 @@
+<div class="new-pass-wrapper">
+  <div class="success-reset" *ngIf="successReset$ | async">
+    <div class="success-reset-text">
+      <p>Your password is successfully changed.</p>
+      <p>You can come back to login page.</p>
+      <button class="new-pass-button" type="button" (click)="goToLogin()">
+        Go to login page
+      </button>
+    </div>
+  </div>
+  <div class="logo-resizer">
+    <app-logo></app-logo>
+  </div>
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <h1 class="new-pass-title">Reset Password</h1>
+  <p>Enter new password</p>
+  <form [formGroup]="newPassForm" (ngSubmit)="onSubmit()" class="new-pass-form">
+    <app-loader *ngIf="showLoader$ | async"></app-loader>
+    <mat-label for="password">{{ 'new password' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        [type]="hidePass ? 'password' : 'text'"
+        id="password"
+        formControlName="password"
+        placeholder="Password" />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hidePass = !hidePass"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePass">
+        <mat-icon>{{ hidePass ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+        {{ getErrorMessage('password') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-label for="confirmPassword">{{
+      'confirm new password' | uppercase
+    }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        [type]="hideConfirm ? 'password' : 'text'"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        placeholder="Password" />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hideConfirm = !hideConfirm"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideConfirm">
+        <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="
+          confirmPassword?.invalid &&
+          (confirmPassword?.dirty || confirmPassword?.touched)
+        ">
+        {{ getErrorMessage('confirmPassword') }}
+      </mat-error>
+    </mat-form-field>
+    <div>
+      <button
+        class="new-pass-button"
+        type="submit"
+        [disabled]="newPassForm.invalid">
+        Send
+      </button>
+    </div>
+    <mat-error
+      *ngIf="errorMessage$ | async as asyncError"
+      class="error-message">
+      {{ asyncError }}
+    </mat-error>
+  </form>
+  <p>
+    Don't have an account?
+    <span><a [routerLink]="'auth/sign-up'">Sign up</a></span>
+  </p>
+</div>

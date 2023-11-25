@@ -1,0 +1,343 @@
+$sizes: ("xs":320px, "sm":576px, "md":768px, "lg":992px, "xl":1200px);
+@mixin media($minmax, $media) {
+  @each $size, $resolution in $sizes {
+    @if $media == $size {
+      @media only screen and (#{$minmax}-width: $resolution) {
+        @content;
+      }
+    }
+  }
+}
+
+$paddings: ("lg": 12px 16px,"xxl": 24px 32px);
+
+.overview-wrapper {
+  margin: 15px;
+  padding: 15px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(50px, auto);
+  grid-template-areas:
+    "hd1 hd2 hd3 hd4"
+    "main main main main"
+    "main main main main"
+    "main main main main"
+    "main main main main"
+    "ft1 ft1 ft2 ft2"
+    "ft1 ft1 ft2 ft2";
+  gap: 30px;
+}
+
+.tasks-wrapper-unresolved {
+  grid-area: hd1;
+}
+.tasks-wrapper-overdue {
+  grid-area: hd2;
+}
+.tasks-wrapper-open {
+  grid-area: hd3;
+}
+.tasks-wrapper-on-hold {
+  grid-area: hd4;
+}
+
+.statistics-data-wrapper {
+  grid-area: main;
+}
+
+.unresolved-tickets-data-wrapper {
+  grid-area: ft1;
+}
+
+.tasks-data-wrapper {
+  grid-area: ft2
+}
+
+.cell {
+  display: flex;
+  // justify-content: center;
+  align-items: stretch;
+  background-color: #fff;
+  color: #252733;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid #C5C7CD;
+  // padding: 32px;
+  @include media("max", "lg") {
+    font-size: 12px;
+  }
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: map-get($paddings, 'xxl'); // 24px 32px;
+  & h3 {
+    color: #9FA2B4;
+    font-size: 19px;
+    font-weight: bold;
+  }
+  & p {
+    margin: 0;
+    color: #252733;
+    font-size: 40px;
+    font-weight: bold;
+  }
+  @include media("max", "lg") {
+    padding: map-get($paddings, 'lg');
+    & h3 {
+      font-size: 10px;
+    }
+    & p {
+      font-size: 20px;
+    }
+  }
+}
+.tasks:hover {
+  border-color: #3751FF;
+  cursor: pointer;
+  & h3, p {
+    color: #3751FF;
+  }
+}
+
+.statistics-data-wrapper {
+  padding: 0;
+  @include media("max", "lg") {
+    flex-direction: column;
+  }
+}
+
+.chart-wrapper {
+  padding: 32px;
+  width: 70%;
+  // text-align: center;
+  @include media("max", "lg") {
+    width:auto
+  }
+}
+
+.stats-wrapper {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  @include media("max", "lg") {
+    width:auto;
+    flex-direction: row;
+  };
+}
+.stats-data-container {
+  padding: map-get($paddings, 'xxl'); // 24px 32px;
+  border-bottom: 1px solid #DFE0EB;
+  border-left: 1px solid #DFE0EB;
+  text-align: center;
+  height: 100%;
+  @include media("max", "xl") {
+    padding: map-get($paddings, 'lg');
+  };
+  @include media("max", "lg") {
+    border-top: 1px solid #DFE0EB;
+    border-bottom: none;
+    flex: 1;
+    height: auto;
+  };
+}
+.stats-data-container:first-child {
+  padding-top: 32px;
+  @include media("max", "xl") {
+    padding-top: 16px;
+  };
+}
+.stats-data-container:last-child {
+  padding-bottom: 32px;
+  @include media("max", "xl") {
+    padding-bottom: 16px;
+  };
+}
+.stats-label {
+  color: #9FA2B4;
+  font-size: 16px;
+  font-weight: 400;
+  @include media("max", "xl") {
+    font-size: 12px;
+  }
+  @include media("max", "lg") {
+    font-size: 8px;
+  }
+}
+.stats-data {
+  color: #252733;
+  font-size: 24px;
+  font-weight: bold;
+  @include media("max", "xl") {
+    font-size: 18px;
+  }
+  @include media("max", "lg") {
+    font-size: 12px;
+  }
+}
+
+.content-data-wrapper {
+  flex-direction: column;
+}
+.content-heading-wrapper, .content-data, .content-add-task-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.content-heading-wrapper {
+  padding: 32px;
+  padding-bottom: 8px;
+}
+.content-heading {
+  color: #252733;
+  font-size: 19px;
+  font-weight: bold;
+}
+.content-details {
+  color: #3751FF;
+}
+.content-group {
+  padding-left: 32px;
+  padding-bottom: 16px;
+  align-self: flex-start;
+  color: #9FA2B4;
+  font-size: 12px;
+  & span {
+    color: #4B506D
+  }
+}
+.content-data, .content-add-task-wrapper {
+  padding: 32px;
+  padding-top: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #DFE0EB;
+  & p {
+    margin: 6px 0;
+  }
+}
+.content-data:last-child {
+  border: none;
+}
+.content-label {
+  margin: 0;
+}
+.content-quantity {
+  color: #9FA2B4;
+}
+
+.content-task-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.content-add-task {
+  color: #C5C7CD;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.content-add-task-btn {
+  height: 24px;
+  width: 24px;
+  background-color: #F0F1F7;
+  color: #9FA2B4;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+}
+
+.content-priority {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+}
+.urgent {
+  background-color: #FEC400;
+}
+.new {
+  background-color: #29CC97;
+}
+.default {
+  background-color: #F0F1F7;
+  color: #9FA2B4;
+}
+
+.content-input {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #C5C7CD;
+  border-radius: 50%;
+}
+
+
+// CREATE CUSTOM CHECKBOX
+.custom-checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 40px;
+  margin: 6px 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.custom-checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkbox-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #eee;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.custom-checkbox-container:hover input ~ .custom-checkbox-mark {
+  background-color: #eee;
+}
+
+.custom-checkbox-container input:checked ~ .custom-checkbox-mark {
+  background-color: #2196F3;
+  border-color: #2196F3;
+}
+
+.custom-checkbox-mark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox-container input:checked ~ .custom-checkbox-mark:after {
+  display: block;
+}
+
+.custom-checkbox-container .custom-checkbox-mark:after {
+  left: 7px;
+  top: 4px;
+  width: 4px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}

@@ -1,0 +1,17 @@
+<section class="contacts-wrapper">
+  <button
+    type="button"
+    (click)="addContact()"
+    class="contacts-add-contact-button">
+    + Add contact
+  </button>
+  <div *ngIf="(contacts$ | async)!.length > 0">
+    <app-universal-table
+      [columns]="columns"
+      [errorMessage]="errorMessage"
+      [dataSource]="(contacts$ | async)!"
+      (elementDeleted)="onContactDeleted($event)"
+      (elementEdited)="onContactEdited($event)"></app-universal-table>
+  </div>
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+</section>

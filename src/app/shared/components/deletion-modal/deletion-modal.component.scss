@@ -1,0 +1,38 @@
+.modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 8px;
+}
+
+.modal-text {
+  word-wrap: break-word;
+}
+
+.modal-buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.modal-button {
+  padding: 10px;
+}
+.modal-button-delete {
+  margin-right: 10px;
+  background: #3751FF;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+  margin: 0px 8px
+}
+
+.modal-button-cancel {
+  background: #fff;
+  color: #3751FF;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+  margin: 0px 8px
+}

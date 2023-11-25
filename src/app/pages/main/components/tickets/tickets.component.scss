@@ -1,0 +1,24 @@
+.tickets-wrapper {
+  min-height: 200px;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #FFF;
+  position: relative;
+  box-shadow:
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12)
+}
+
+.tickets-add-ticket-button {
+  color: #3751FF;
+  font-weight: 500;
+  position: absolute;
+  top: 37px;
+  right: 32px;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  z-index: 9;
+}

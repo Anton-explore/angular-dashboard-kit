@@ -1,0 +1,53 @@
+<div
+  class="reset-pass-wrapper"
+  [ngClass]="{ 'email-sent-wrapper': emailSent$ | async }">
+  <div class="logo-resizer">
+    <app-logo></app-logo>
+  </div>
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <h1 class="reset-pass-title">Forgot password?</h1>
+  <div
+    *ngIf="(emailSent$ | async) === false; else successMessage"
+    class="reset-pass-content-wrapper">
+    <p>Enter your email from registered account</p>
+    <form
+      [formGroup]="emailForm"
+      (ngSubmit)="onSubmit()"
+      class="reset-pass-form">
+      <app-loader *ngIf="showLoader$ | async"></app-loader>
+      <mat-label for="email">{{ 'email' | uppercase }}</mat-label>
+      <mat-form-field class="form-field" appearance="outline">
+        <input
+          matInput
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Email address" />
+        <mat-error *ngIf="email!.invalid && (email!.dirty || email!.touched)">
+          {{ getEmailErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <div>
+        <button
+          class="reset-pass-button"
+          type="submit"
+          [disabled]="emailForm.invalid">
+          Send
+        </button>
+      </div>
+    </form>
+    <p>
+      Don't have an account?
+      <span><a [routerLink]="'../sign-up'">Sign up</a></span>
+    </p>
+  </div>
+  <ng-template #successMessage>
+    <p>
+      Link to change your password has been sent to provided email if we have it
+      inside our system
+    </p>
+  </ng-template>
+  <mat-error *ngIf="errorMessage$ | async as asyncError">
+    {{ asyncError }}
+  </mat-error>
+</div>

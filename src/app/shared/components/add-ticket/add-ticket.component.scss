@@ -1,0 +1,68 @@
+.mat-mdc-dialog-container {
+  width: 380px;
+}
+
+.change-ticket-wrapper {
+  // width: 380px;
+  padding: 36px 8px;
+}
+.change-ticket-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.change-ticket-header {
+  font-size: 24px;
+  color: #252733;
+}
+
+.change-ticket-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.change-ticket-btn {
+  width: 314px;
+  margin: 0px 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.save-btn {
+  background: #3751FF;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+}
+
+.save-btn:disabled {
+  background: #9FA2B4;
+}
+
+.cancel-btn {
+  background: #fff;
+  color: #3751FF;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+}
+
+.form-option {
+  color: #fff;
+  border-radius: 4px;
+}
+
+.form-option-normal {
+  background-color: #29CC97;
+}
+
+.form-option-low {
+  background-color: #FEC400;
+}
+
+.form-option-high {
+  background-color: #F12B2C;
+}

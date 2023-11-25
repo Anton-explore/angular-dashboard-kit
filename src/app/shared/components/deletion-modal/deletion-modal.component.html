@@ -1,0 +1,27 @@
+<div class="modal-wrapper">
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <h2 mat-dialog-title>{{ content.title }}</h2>
+  <hr />
+  <mat-dialog-content class="modal-text">
+    <ng-container>{{ content.text }}</ng-container>
+  </mat-dialog-content>
+  <hr />
+  <mat-error *ngIf="errorMessage">
+    {{ errorMessage }}
+  </mat-error>
+  <mat-dialog-actions align="center" class="modal-buttons-wrapper">
+    <button
+      mat-button
+      mat-dialog-close
+      class="modal-button modal-button-cancel">
+      Cancel
+    </button>
+    <button
+      mat-button
+      (click)="onSubmit()"
+      [disabled]="errorMessage"
+      class="modal-button modal-button-delete">
+      Delete
+    </button>
+  </mat-dialog-actions>
+</div>

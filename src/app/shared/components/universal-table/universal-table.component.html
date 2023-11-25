@@ -1,0 +1,174 @@
+<div class="universal-table-wrapper">
+  <div class="table-sorting-wrapper">
+    <button class="table-sort-button" mat-button>
+      <fa-icon class="fa-icon" [icon]="sortIcon"></fa-icon>
+      Sort
+    </button>
+    <button class="table-filter-button" mat-button (click)="toggleFilter()">
+      <fa-icon class="fa-icon" [icon]="filterIcon"></fa-icon>
+      Filter
+    </button>
+    <mat-form-field
+      [ngClass]="{ 'filter-visible': isFilterVisible }"
+      class="table-filter-input"
+      appearance="outline">
+      <input
+        matInput
+        (keyup)="applyFilter()"
+        placeholder="Type here"
+        class="table-filter-input-field"
+        [(ngModel)]="filterValue" />
+      <button
+        *ngIf="filterValue"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!-- <app-loader *ngIf="showLoader$ | async"></app-loader> -->
+  <ng-container *ngIf="errorMessage">
+    <mat-error class="table-error">
+      No data, please check internet connection
+    </mat-error>
+  </ng-container>
+
+  <table
+    mat-table
+    [dataSource]="data"
+    matSort
+    matSortDirection="asc"
+    [ngClass]="{ hidden: errorMessage }">
+    <ng-container *ngFor="let column of columns">
+      <ng-container
+        *ngIf="column.columnDef === 'detail' || column.columnDef === 'name'">
+        <ng-container [matColumnDef]="column.columnDef">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ column.header }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="table-cell-image-container">
+              <div class="table-image-wrapper">
+                <img
+                  class="table-cell-image"
+                  [src]="
+                    column.columnDef === 'detail'
+                      ? row.customerAvatar
+                        ? row.customerAvatar
+                        : userAvatar
+                      : row.avatar
+                      ? row.avatar
+                      : userAvatar
+                  "
+                  alt="Avatar" />
+              </div>
+              <div>
+                <p>{{ column.cell(row) }}</p>
+                <p
+                  *ngIf="column.columnDef === 'detail'"
+                  class="table-cell-minor-text">
+                  {{ row.date | dateDifference }}
+                </p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          column.columnDef !== 'detail' &&
+          column.columnDef !== 'name' &&
+          column.columnDef !== 'menu' &&
+          column.columnDef !== 'priority'
+        ">
+        <ng-container [matColumnDef]="column.columnDef">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>
+            {{ column.header }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{
+              (column.cell(row) | isValidDate)
+                ? (column.cell(row) | date: 'MMM d, y')
+                : column.cell(row)
+            }}
+            <p
+              class="table-cell-minor-text"
+              *ngIf="
+                (column.cell(row) | isValidDate) && column.columnDef === 'date'
+              ">
+              {{ column.cell(row) | date: 'h:mm a' }}
+            </p>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="column.columnDef === 'priority'">
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>Priority</th>
+          <td mat-cell *matCellDef="let row">
+            <button
+              class="priority-button"
+              [ngClass]="cellClasses[row['priority']]"
+              type="button"
+              disabled>
+              {{ column.cell(row) | uppercase }}
+            </button>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="column.columnDef === 'menu'">
+        <ng-container matColumnDef="menu">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <div class="dots-menu-container">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <ng-template matMenuContent>
+                  <button
+                    type="button"
+                    mat-menu-item
+                    (click)="editElement(row.id)">
+                    <span>Update</span>
+                  </button>
+                  <button
+                    type="button"
+                    mat-menu-item
+                    (click)="deleteElement(row.id)">
+                    <span>Delete</span>
+                  </button>
+                </ng-template>
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr *matNoDataRow>
+      <td colspan="5">
+        <mat-error class="table-error">
+          No data matching the filter "{{ filterValue }}"
+        </mat-error>
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[4, 8, 16, 32]"
+    showFirstLastButtons
+    aria-label="Select page of items">
+  </mat-paginator>
+</div>

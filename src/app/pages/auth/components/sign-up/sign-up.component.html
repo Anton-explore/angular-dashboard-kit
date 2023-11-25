@@ -1,0 +1,112 @@
+<div class="sign-wrapper">
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <div class="logo-resizer">
+    <app-logo></app-logo>
+  </div>
+  <h1 class="sign-title">Sign Up</h1>
+  <p>Create a new account</p>
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="sign-form">
+    <mat-label for="email">{{ 'email' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Email address" />
+      <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+        {{ getErrorMessage('email') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-label for="firstName">{{ 'first name' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        type="text"
+        id="firstName"
+        formControlName="firstName"
+        placeholder="First name" />
+      <mat-error
+        *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)">
+        {{ getErrorMessage('firstName') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-label for="lastName">{{ 'last name' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        placeholder="Last name" />
+      <mat-error
+        *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)">
+        {{ getErrorMessage('lastName') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label for="password">{{ 'password' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        [type]="hidePass ? 'password' : 'text'"
+        id="password"
+        formControlName="password"
+        placeholder="Password" />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hidePass = !hidePass"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePass">
+        <mat-icon>{{ hidePass ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+        {{ getErrorMessage('password') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-label for="confirmPassword">{{
+      'confirm password' | uppercase
+    }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        [type]="hideConfirm ? 'password' : 'text'"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        placeholder="Password" />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hideConfirm = !hideConfirm"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideConfirm">
+        <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="
+          confirmPassword?.invalid &&
+          (confirmPassword?.dirty || confirmPassword?.touched)
+        ">
+        {{ getErrorMessage('confirmPassword') }}
+      </mat-error>
+    </mat-form-field>
+    <div>
+      <button class="sign-button" type="submit" [disabled]="signUpForm.invalid">
+        Register
+      </button>
+    </div>
+    <mat-error
+      *ngIf="errorMessage$ | async as asyncError"
+      class="error-message">
+      {{ asyncError }}
+    </mat-error>
+  </form>
+  <p>
+    Already have an account?
+    <span><a [routerLink]="'../login'">Log In</a></span>
+  </p>
+</div>
