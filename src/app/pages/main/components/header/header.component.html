@@ -1,0 +1,23 @@
+<header class="header">
+  <h2 class="page-title">
+    {{ pageTitle }}
+  </h2>
+  <div class="header-data-wrapper">
+    <div class="messages-wrapper">
+      <fa-icon class="fa-icon" [icon]="searchIcon"></fa-icon>
+      <fa-icon class="fa-icon" [icon]="bellIcon"></fa-icon>
+      <div class="notice-icon" *ngIf="notification"></div>
+    </div>
+    <div class="user-data-wrapper" *ngIf="user$ | async as user">
+      <p class="username">
+        {{ user.firstName }} <span>{{ user.lastName }}</span>
+      </p>
+      <div class="user-img-wrapper">
+        <img class="user-img" [src]="user.avatar" alt="avatar" />
+      </div>
+      <button class="logout" (click)="logout()">
+        <fa-icon [icon]="logoutIcon"></fa-icon>
+      </button>
+    </div>
+  </div>
+</header>

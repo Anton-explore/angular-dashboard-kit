@@ -1,0 +1,28 @@
+<aside class="nav-panel">
+  <app-logo></app-logo>
+  <nav class="nav-menu">
+    <ul class="nav-menu-list">
+      <li class="nav-menu-item" *ngFor="let option of menu">
+        <a
+          class="nav-link"
+          [routerLink]="'/dashboard/' + option.link"
+          routerLinkActive="active-link">
+          <fa-icon class="fa-icon" [icon]="option.badge"></fa-icon>
+          <span> {{ option.name }}</span>
+        </a>
+      </li>
+    </ul>
+    <hr />
+    <ul class="nav-menu-list">
+      <li class="nav-menu-item" *ngFor="let option of settings">
+        <a
+          class="nav-link"
+          [routerLink]="'/dashboard/' + option.link"
+          routerLinkActive="active-link">
+          <fa-icon class="fa-icon" [icon]="option.badge"></fa-icon>
+          <span> {{ option.name }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>

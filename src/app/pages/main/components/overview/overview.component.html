@@ -1,0 +1,77 @@
+<section class="overview-wrapper">
+  <div class="cell tasks tasks-wrapper-unresolved">
+    <h3 class="tasks-title">Unresolved</h3>
+    <p class="tasks-number">{{ tasksStatus.unresolved }}</p>
+  </div>
+  <div class="cell tasks tasks-wrapper-overdue">
+    <h3 class="tasks-title">Overdue</h3>
+    <p class="tasks-number">{{ tasksStatus.overdue }}</p>
+  </div>
+  <div class="cell tasks tasks-wrapper-open">
+    <h3 class="tasks-title">Open</h3>
+    <p class="tasks-number">{{ tasksStatus.open }}</p>
+  </div>
+  <div class="cell tasks tasks-wrapper-on-hold">
+    <h3 class="tasks-title">On hold</h3>
+    <p class="tasks-number">{{ tasksStatus.onHold }}</p>
+  </div>
+
+  <div class="cell statistics-data-wrapper">
+    <div class="chart-wrapper">
+      <app-chart></app-chart>
+    </div>
+    <div class="stats-wrapper">
+      <div
+        class="stats-data-container"
+        *ngFor="let stat of stats; let last = last">
+        <h4 class="stats-label">{{ stat.label }}</h4>
+        <p class="stats-data">
+          {{
+            last
+              ? stat.data + '%'
+              : stat.label.includes('Average')
+              ? (stat.data | formatDuration)
+              : stat.data
+          }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cell content-data-wrapper unresolved-tickets-data-wrapper">
+    <div class="content-heading-wrapper">
+      <h4 class="content-heading">Unresolved tickets</h4>
+      <div class="content-details">View details</div>
+    </div>
+    <div class="content-group">Group: <span>Support</span></div>
+    <div class="content-data" *ngFor="let ticketsType of tickets">
+      <p class="content-label">{{ ticketsType.type }}</p>
+      <p class="content-quantity">{{ ticketsType.quantity }}</p>
+    </div>
+  </div>
+  <div class="cell content-data-wrapper tasks-data-wrapper">
+    <div class="content-heading-wrapper">
+      <h4 class="content-heading">Tasks</h4>
+      <div class="content-details">View all</div>
+    </div>
+    <div class="content-group">Today</div>
+    <div class="content-add-task-wrapper">
+      <p class="content-add-task">Create new task</p>
+      <button class="content-add-task-btn">+</button>
+    </div>
+    <div class="content-data" *ngFor="let task of tasks">
+      <label class="custom-checkbox-container"
+        >{{ task.details }}
+        <input type="checkbox" [checked]="task.checked" />
+        <span class="custom-checkbox-mark"></span>
+      </label>
+      <button
+        type="button"
+        class="content-priority"
+        [ngClass]="task.status"
+        disabled>
+        {{ task.status | uppercase }}
+      </button>
+    </div>
+  </div>
+</section>

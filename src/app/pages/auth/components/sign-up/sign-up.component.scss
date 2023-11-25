@@ -1,0 +1,51 @@
+.sign-wrapper {
+  position: relative;
+  width: 360px;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #9FA2B4;
+  font-size: 12px;
+  & h1, p {
+    margin: 0;
+  }
+}
+
+.sign-title {
+  color: #252733;
+}
+
+.logo-resizer {
+  width: 150px;
+}
+
+.sign-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-field {
+  height: 70px;
+  & input {
+    height: 20px;
+  }
+}
+
+.sign-button {
+  width: 100%;
+  height: 48px;
+  border-radius: 5px;
+  background-color: blue;
+  color: #fff
+}
+
+.error-message {
+  margin: 0 auto;
+  text-align: center;
+}

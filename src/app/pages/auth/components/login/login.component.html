@@ -1,0 +1,59 @@
+<div class="login-wrapper">
+  <div class="logo-resizer">
+    <app-logo></app-logo>
+  </div>
+  <h1 class="login-title">Log In to Dashboard Kit</h1>
+  <p>Enter your email and password</p>
+  <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <mat-label for="email">{{ 'email' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Email address" />
+      <mat-error *ngIf="email!.invalid && (email!.dirty || email!.touched)">
+        {{ getEmailErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <mat-label for="password">{{ 'password' | uppercase }}</mat-label>
+    <mat-form-field class="form-field" appearance="outline">
+      <input
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        id="password"
+        formControlName="password"
+        placeholder="Password" />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="password!.invalid && (password!.dirty || password!.touched)">
+        {{ getPassErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <div>
+      <button class="login-button" type="submit" [disabled]="loginForm.invalid">
+        Log In
+      </button>
+    </div>
+    <mat-error
+      *ngIf="errorMessage$ | async as asyncError"
+      class="error-message">
+      {{ asyncError }}
+    </mat-error>
+  </form>
+  <p>
+    Don't have an account?
+    <span><a [routerLink]="'../sign-up'">Sign up</a></span>
+  </p>
+  <p><a [routerLink]="'../reset-password'">Forgot password?</a></p>
+</div>
