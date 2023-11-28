@@ -14,12 +14,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [],
   imports: [
     FontAwesomeModule,
     MatFormFieldModule,
+    MatSnackBarModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
@@ -36,6 +38,7 @@ import { MatNativeDateModule } from '@angular/material/core';
   exports: [
     FontAwesomeModule,
     MatFormFieldModule,
+    MatSnackBarModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,

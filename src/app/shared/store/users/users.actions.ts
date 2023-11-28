@@ -44,3 +44,5 @@ export const authError = createAction(
   '[User] Get authentication error',
   props<{ error: string }>()
 );
+
+export const clearAuthError = createAction('[User] Clear authentication error');

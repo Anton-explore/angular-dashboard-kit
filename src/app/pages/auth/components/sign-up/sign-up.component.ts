@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,14 +17,17 @@ import {
   selectUserError,
   selectUserLoading,
 } from 'src/app/shared/store/selectors';
-import { signUp } from 'src/app/shared/store/users/users.actions';
+import {
+  clearAuthError,
+  signUp,
+} from 'src/app/shared/store/users/users.actions';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm!: FormGroup<SignUpFormType>;
   hidePass = true;
   hideConfirm = true;
@@ -147,5 +150,9 @@ export class SignUpComponent implements OnInit {
       };
       this.store.dispatch(signUp({ user }));
     }
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(clearAuthError());
   }
 }

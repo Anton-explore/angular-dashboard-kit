@@ -14,4 +14,11 @@
       (elementEdited)="onContactEdited($event)"></app-universal-table>
   </div>
   <app-loader *ngIf="showLoader$ | async"></app-loader>
+  <div
+    class="error-container"
+    *ngIf="(contacts$ | async)!.length <= 0 && (showLoader$ | async) === false">
+    <mat-error class="table-error">
+      No data, please check internet connection
+    </mat-error>
+  </div>
 </section>

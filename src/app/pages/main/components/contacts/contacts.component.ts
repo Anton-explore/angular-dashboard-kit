@@ -6,10 +6,11 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { Observable, Subject, map, switchMap, takeUntil, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AddContactComponent } from 'src/app/shared/components/add-contact/add-contact.component';
 import { DeletionModalComponent } from 'src/app/shared/components/deletion-modal/deletion-modal.component';
@@ -21,12 +22,15 @@ import {
 import { AppState, TableColumnsType } from 'src/app/models/types';
 
 import {
+  clearContactsError,
   createImage,
   deleteContact,
+  getContactsError,
   getContactsPending,
 } from 'src/app/shared/store/contacts/contacts.actions';
 import {
   selectContacts,
+  selectContactsError,
   selectContactsLoading,
 } from 'src/app/shared/store/selectors';
 
@@ -65,7 +69,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
       cell: () => '',
     },
   ];
-  errorMessage!: string;
+  errorMessage$: Observable<string | null> =
+    this.store.select(selectContactsError);
+  errorMessage: string | null = null;
   contacts!: ContactsType[];
   contacts$: Observable<ContactsType[]> = this.store.select(selectContacts);
   showLoader$: Observable<boolean> = this.store.select(selectContactsLoading);
@@ -74,11 +80,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.getContactsData();
+    this.handleErrors();
   }
 
   private getContactsData() {
@@ -90,9 +98,31 @@ export class ContactsComponent implements OnInit, OnDestroy {
         }
       },
       error: (error: string) => {
-        this.errorMessage = error;
+        this.store.dispatch(getContactsError({ error }));
       },
     });
+  }
+
+  private handleErrors() {
+    this.errorMessage$
+      .pipe(
+        map(error => {
+          if (error) {
+            this.snackBar.open(error, 'X', {
+              duration: 4000,
+            });
+          } else if (this.errorMessage) {
+            this.snackBar.open(this.errorMessage, 'X', {
+              duration: 4000,
+            });
+          }
+        }),
+        switchMap(() => timer(5000)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.store.dispatch(clearContactsError());
+      });
   }
 
   addContact() {
@@ -112,19 +142,17 @@ export class ContactsComponent implements OnInit, OnDestroy {
                 actionType: 'create',
               })
             );
+            this.cdr.detectChanges();
           }
-
-          // this.store.dispatch(createContactPending({ contact }));
         }),
         takeUntil(this.destroy$)
       )
       .subscribe({
         next: () => {
-          this.cdr.detectChanges();
           this.menuTrigger?.focus();
         },
         error: (error: string) => {
-          this.errorMessage = error;
+          this.store.dispatch(getContactsError({ error }));
         },
       });
   }
@@ -150,7 +178,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(
         map(({ contact, avatar }: ContactFormDataType) => {
-          // this.store.dispatch(updateContact({ contact }));
           if (contact) {
             this.store.dispatch(
               createImage({
@@ -160,17 +187,17 @@ export class ContactsComponent implements OnInit, OnDestroy {
                 actionType: 'update',
               })
             );
+            this.cdr.detectChanges();
           }
         }),
         takeUntil(this.destroy$)
       )
       .subscribe({
         next: () => {
-          this.cdr.detectChanges();
           this.menuTrigger?.focus();
         },
         error: (error: string) => {
-          this.errorMessage = error;
+          this.store.dispatch(getContactsError({ error }));
         },
       });
   }
@@ -191,20 +218,25 @@ export class ContactsComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.content = {
       title: 'Delete contact?',
       text: `Are you sure you want to delete ${contactName} contact?`,
+      id: contactId,
     };
     dialogRef
       .afterClosed()
       .pipe(
-        map(() => this.store.dispatch(deleteContact({ id: contactId }))),
+        map(id => {
+          if (id) {
+            this.store.dispatch(deleteContact({ id }));
+            this.cdr.detectChanges();
+          }
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe({
         next: () => {
-          this.cdr.detectChanges();
           this.menuTrigger?.focus();
         },
         error: (error: string) => {
-          this.errorMessage = error;
+          this.store.dispatch(getContactsError({ error }));
         },
       });
   }

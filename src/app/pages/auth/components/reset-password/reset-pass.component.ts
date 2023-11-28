@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/models/types';
@@ -10,14 +9,17 @@ import {
   selectUserError,
   selectUserLoading,
 } from 'src/app/shared/store/selectors';
-import { sendResetEmail } from 'src/app/shared/store/users/users.actions';
+import {
+  clearAuthError,
+  sendResetEmail,
+} from 'src/app/shared/store/users/users.actions';
 
 @Component({
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.component.html',
   styleUrls: ['./reset-pass.component.scss'],
 })
-export class ResetPassComponent implements OnInit {
+export class ResetPassComponent implements OnInit, OnDestroy {
   emailForm!: FormGroup<ResetPartial>;
   emailSent$ = this.store.select(selectSendingEmailToUser);
   errorMessage$: Observable<string | null> = this.store.select(selectUserError);
@@ -25,8 +27,7 @@ export class ResetPassComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<AppState>,
-    private router: Router
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -62,5 +63,9 @@ export class ResetPassComponent implements OnInit {
       this.store.dispatch(sendResetEmail({ email }));
       this.emailForm.reset();
     }
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(clearAuthError());
   }
 }

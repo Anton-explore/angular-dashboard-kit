@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  clearContactsError,
   createContactPending,
   createContactSuccess,
   createImage,
@@ -88,5 +89,10 @@ export const contactsReducer = createReducer(
       loading: true,
       error: null,
     })
-  )
+  ),
+  on(clearContactsError, state => ({
+    ...state,
+    loading: false,
+    error: null,
+  }))
 );

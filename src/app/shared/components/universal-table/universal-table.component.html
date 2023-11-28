@@ -30,7 +30,7 @@
   </div>
 
   <!-- <app-loader *ngIf="showLoader$ | async"></app-loader> -->
-  <ng-container *ngIf="errorMessage">
+  <ng-container *ngIf="data.data.length <= 0">
     <mat-error class="table-error">
       No data, please check internet connection
     </mat-error>

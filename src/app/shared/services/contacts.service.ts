@@ -42,7 +42,6 @@ export class ContactsService {
           updatedContacts
         );
       }),
-      // map(resp => resp),
       catchError((error: { message: string }) => {
         return throwError(() => 'An error occurred: ' + error.message);
       })
@@ -68,7 +67,6 @@ export class ContactsService {
           updatedContacts
         );
       }),
-      // map(resp => resp),
       catchError((error: { message: string }) => {
         return throwError(() => 'An error occurred: ' + error.message);
       })

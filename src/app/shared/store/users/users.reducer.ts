@@ -3,6 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { UserState } from 'src/app/models/users.model';
 import {
   authError,
+  clearAuthError,
   login,
   logout,
   resetPassword,
@@ -77,6 +78,13 @@ export const userReducer = createReducer(
     ...state,
     loading: false,
     error,
+    sendEmail: false,
+    resetPass: false,
+  })),
+  on(clearAuthError, state => ({
+    ...state,
+    loading: false,
+    error: null,
     sendEmail: false,
     resetPass: false,
   })),

@@ -51,3 +51,7 @@ export const deleteContact = createAction(
   '[Contacts] Delete Contact',
   props<{ id: number }>()
 );
+
+export const clearContactsError = createAction(
+  '[Contacts] Clear contacts error'
+);

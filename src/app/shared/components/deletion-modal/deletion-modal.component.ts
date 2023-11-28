@@ -25,6 +25,6 @@ export class DeletionModalComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.content.id);
   }
 }

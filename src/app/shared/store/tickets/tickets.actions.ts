@@ -27,3 +27,5 @@ export const deleteTicket = createAction(
   '[Tickets] Delete Ticket',
   props<{ id: number }>()
 );
+
+export const clearTicketsError = createAction('[Tickets] Clear tickets error');

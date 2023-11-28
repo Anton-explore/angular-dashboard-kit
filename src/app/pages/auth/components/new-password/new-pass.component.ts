@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,23 +17,24 @@ import {
   selectUserError,
   selectUserLoading,
 } from 'src/app/shared/store/selectors';
-import { resetPassword } from 'src/app/shared/store/users/users.actions';
+import {
+  clearAuthError,
+  resetPassword,
+} from 'src/app/shared/store/users/users.actions';
 
 @Component({
   selector: 'app-new-pass',
   templateUrl: './new-pass.component.html',
   styleUrls: ['./new-pass.component.scss'],
 })
-export class NewPassComponent implements OnInit {
+export class NewPassComponent implements OnInit, OnDestroy {
   @Input() private oobCode = '';
   newPassForm!: FormGroup<NewPasswordPartial>;
   hidePass = true;
   hideConfirm = true;
   showLoader$ = this.store.select(selectUserLoading);
-  // private oobCode!: string;
   successReset$ = this.store.select(selectResetPassword);
   errorMessage$: Observable<string | null> = this.store.select(selectUserError);
-  // private destroy$ = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,9 +43,7 @@ export class NewPassComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.showLoader$ = this.loaderService.isLoading$;
     this.initForm();
-    // this.receiveResetCode();
   }
 
   initForm() {
@@ -53,17 +52,6 @@ export class NewPassComponent implements OnInit {
       confirmPassword: ['', [Validators.required, this.confirmPassValidator()]],
     });
   }
-
-  // receiveResetCode() {
-  // this.route.queryParams.subscribe((params: Params) => {
-  //   const oobCode = params['oobCode'];
-
-  //   if (oobCode) {
-  //     console.log('oobCode:', oobCode);
-  //     this.oobCode = oobCode;
-  //   }
-  // });
-  // }
 
   get password() {
     return this.newPassForm.get('password');
@@ -136,8 +124,7 @@ export class NewPassComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 
-  // ngOnDestroy(): void {
-  //   this.destroy$.next();
-  //   this.destroy$.complete();
-  // }
+  ngOnDestroy(): void {
+    this.store.dispatch(clearAuthError());
+  }
 }

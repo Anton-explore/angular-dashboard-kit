@@ -104,7 +104,6 @@ export const deleteContactEffect = createEffect(
       switchMap(({ id }) =>
         contactsService.deleteContact(id).pipe(
           map(contacts => {
-            console.log(contacts);
             return getContactsSuccess({ contacts });
           }),
           catchError((error: string) => of(getContactsError({ error })))

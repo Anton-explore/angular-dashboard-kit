@@ -42,6 +42,7 @@ export interface TicketsStatType {
 export interface ModalContentType {
   title: string;
   text: string;
+  id: number;
 }
 
 export interface ApiEndpointLinks {

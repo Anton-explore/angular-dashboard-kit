@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/models/types';
 import { LoginPartial, LoginUserType } from 'src/app/models/users.model';
 
-import { login } from 'src/app/shared/store/users/users.actions';
+import { clearAuthError, login } from 'src/app/shared/store/users/users.actions';
 import {
   selectUserError,
   selectUserLoading,
@@ -17,7 +17,7 @@ import {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup<LoginPartial>;
   hide = true;
   errorMessage$: Observable<string | null> = this.store.select(selectUserError);
@@ -66,5 +66,9 @@ export class LoginComponent implements OnInit {
       };
       this.store.dispatch(login(loginValues));
     }
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(clearAuthError());
   }
 }

@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { TicketsState } from 'src/app/models/tickets.model';
 import {
+  clearTicketsError,
   createTicket,
   deleteTicket,
   getTicketsError,
@@ -70,5 +71,10 @@ export const ticketsReducer = createReducer(
       loading: true,
       error: null,
     })
-  )
+  ),
+  on(clearTicketsError, state => ({
+    ...state,
+    loading: false,
+    error: null,
+  }))
 );
